@@ -77,9 +77,9 @@ def extractWordFeatures(file):
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
     dict = {}
-    with open(file) as f:
-		content = f.read()
-    	for word in content.split():
+    with open(file,'r') as f:
+    	x = f.read()
+    	for word in x.split():
         	dict[word] = dict[word] + 1 if word in dict else 1
     return dict
     # END_YOUR_CODE
