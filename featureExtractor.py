@@ -77,7 +77,9 @@ def extractWordFeatures(x):
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
     dict = {}
-    for word in x.split():
-        dict[word] = dict[word] + 1 if word in dict else 1
+    with open('data/emily-bronte.txt') as f:
+		content = f.read()
+    	for word in x.split():
+        	dict[word] = dict[word] + 1 if word in dict else 1
     return dict
     # END_YOUR_CODE
