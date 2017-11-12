@@ -67,7 +67,7 @@ def extractCharacterFeatures(n):
         # END_YOUR_CODE
     return extract
 
-def extractWordFeatures(x):
+def extractWordFeatures(file):
     """
     Extract word features for a string x. Words are delimited by
     whitespace characters only.
@@ -77,9 +77,9 @@ def extractWordFeatures(x):
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
     dict = {}
-    with open('data/emily-bronte.txt') as f:
+    with open(file) as f:
 		content = f.read()
-    	for word in x.split():
+    	for word in content.split():
         	dict[word] = dict[word] + 1 if word in dict else 1
     return dict
     # END_YOUR_CODE
