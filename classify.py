@@ -10,3 +10,18 @@ testLabels = {'data/nathaniel-hawthorne.txt': -1, 'data/oscar-wilde.txt': -1, 'd
 
 weights = learnPredictor(trainingLabels, None, extractWordFeatures, 10, 0.01)
 
+correctClassifications = 0
+totalClassifications = len(testLabels)
+#We'll change this later...decompose and stuff
+for (file, y) in testLabels.iteritems():
+	featureVector = extractWordFeatures(file)
+	classification = -1 if dotProduct(featureVector, weights) < 0 else 1
+	if (classification == y):
+		correctClassifications += 1
+		print("Correctly classified %s as %d" % (file, classification))
+	else:
+		print("Incorrectly classified %s as %d" % (file, classification))
+percentCorrect = 100 * float(correctClassifications) / totalClassifications
+print("%d correct classifications out of %d (%f percent correct)." % (correctClassifications, totalClassifications, percentClassification))
+
+
