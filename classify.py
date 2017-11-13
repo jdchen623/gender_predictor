@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from featureExtractor import *
 
 trainingLabels = {'data/anne-jane-couples.txt': 1, 'data/arthur-conan-doyle.txt': -1, 'data/charles-dickens.txt': -1, \
@@ -8,7 +9,7 @@ trainingLabels = {'data/anne-jane-couples.txt': 1, 'data/arthur-conan-doyle.txt'
 testLabels = {'data/nathaniel-hawthorne.txt': -1, 'data/oscar-wilde.txt': -1, 'data/victor-hugo.txt': -1,\
 'data/virginia-hughes.txt': 1, 'data/virginia-woolf.txt': 1, 'data/willa-cather.txt': 1} 
 
-weights = learnPredictor(trainingLabels, None, extractWordFeatures, 10, 0.01)
+weights = learnPredictor(trainingLabels, None, extractWordFeatures, 1000, 0.015)
 
 correctClassifications = 0
 totalClassifications = len(testLabels)
@@ -16,12 +17,13 @@ totalClassifications = len(testLabels)
 for (file, y) in testLabels.iteritems():
 	featureVector = extractWordFeatures(file)
 	classification = -1 if dotProduct(featureVector, weights) < 0 else 1
+	print(dotProduct(featureVector, weights))
 	if (classification == y):
 		correctClassifications += 1
 		print("Correctly classified %s as %d" % (file, classification))
 	else:
 		print("Incorrectly classified %s as %d" % (file, classification))
 percentCorrect = 100 * float(correctClassifications) / totalClassifications
-print("%d correct classifications out of %d (%f percent correct)." % (correctClassifications, totalClassifications, percentClassification))
+print("%d correct classifications out of %d (%f percent correct)." % (correctClassifications, totalClassifications, percentCorrect))
 
 
