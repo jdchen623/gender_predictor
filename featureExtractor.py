@@ -75,11 +75,51 @@ def extractWordFeatures(file):
     @return dict: feature vector representation of x.
     Example: "I am what I am" --> {'I': 2, 'am': 2, 'what': 1}
     """
-    # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
-    dict = {}
+
+    """
+    TODO: Dealing with - and --, more features, consider using the form (count / number of words) for all rate features,
+    maybe use defaultdict?
+    Current features:
+        -occurences of specific word / words
+        -! per sentence
+        -? per sentence
+        -, per sentence
+        -' per sentence
+        -number of sentences (proxy is number of periods)
+
+    """
+
+    wordDict = {} #For word features
+    sentenceDict = {} #For per-sentence features
+    miscellaneousDict = {} #Any other non-rate based features we want
+    numWords = 0 
+    numSentences = 0
     with open(file,'r') as f:
-    	x = f.read()
-    	for word in x.split():
-        	dict[word] = dict[word] + 1 if word in dict else 1
-    return dict
-    # END_YOUR_CODE
+    	content = f.read()
+        words = [word.lower() for word in content.split()]
+        numWords = len(words)
+    	for word in words:
+            strippedWord = word.strip('.,!?()')
+            wordDict[strippedWord] = wordDict[strippedWord] + 1 if strippedWord in wordDict else 1
+            punctuation = word[-1]
+            if (punctuation == '!' or punctuation == '?' or punctuation == ','):
+                sentenceDict[punctuation] = sentenceDict[punctuation] + 1 if punctuation in sentenceDict else 1 #default dict?
+            if ("'" in word):
+                sentenceDict["'"] = sentenceDict["'"] + 1 if "'" in sentenceDict else 1
+
+        numSentences = len(content.split('.'))
+        avgSentenceLength = numWords / numSentences
+        miscellaneousDict['sentenceLength'] = avgSentenceLength
+
+    #Normalize dicts...does anyone know a better way?
+    for key in wordDict.keys(): 
+        wordDict[key] = float(wordDict[key]) / numWords
+    for key in sentenceDict.keys(): # could make this per word for simplicity as well
+        sentenceDict[key] = float(sentenceDict[key]) / numSentences
+
+    #Merging dicts
+    featureVector = wordDict
+    featureVector.update(sentenceDict)
+    featureVector.update(miscellaneousDict)
+
+    return featureVector

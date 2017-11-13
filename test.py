@@ -1,4 +1,3 @@
 from featureExtractor import *
 
-y  = extractWordFeatures('data/emily-bronte.txt')
-print(y)
+features = extractWordFeatures('data/mary-shelley.txt')
