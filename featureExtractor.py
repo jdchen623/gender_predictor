@@ -26,12 +26,14 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
     weights = {}  # feature => weight
     # BEGIN_YOUR_CODE (our solution is 12 lines of code, but don't worry if you deviate from this)
     for step in range(0, numIters):
+        """
         def predictor(x):
             return 1 if dotProduct(featureExtractor(x), weights) > 0 else -1
         misclassifiedTraining = evaluatePredictor(trainExamples, predictor)
         misclassifiedTest = evaluatePredictor(testExamples, predictor)
         print("Training error: %f, Test error: %f" % (misclassifiedTraining, misclassifiedTest))
-        for (x, y) in trainExamples:
+        """
+        for (x, y) in trainExamples.iteritems():
             phiX = featureExtractor(x)
             if dotProduct(weights, phiX)*y < 1:
                 gradient = {key: (-phiX[key]*y) for key in phiX}
@@ -68,15 +70,10 @@ def extractCharacterFeatures(n):
     return extract
 
 def extractWordFeatures(file):
-    """
-    Extract word features for a string x. Words are delimited by
-    whitespace characters only.
-    @param string x:
-    @return dict: feature vector representation of x.
-    Example: "I am what I am" --> {'I': 2, 'am': 2, 'what': 1}
-    """
 
     """
+    You can run stuff with ./test.py 
+
     TODO: Dealing with - and --, more features, consider using the form (count / number of words) for all rate features,
     maybe use defaultdict?
     Current features:
@@ -86,10 +83,14 @@ def extractWordFeatures(file):
         -, per sentence
         -' per sentence
         -number of sentences (proxy is number of periods)
+    Feature to add:
+        -Average word length
+        -Percent dialogue
+        -Sentiment
 
     """
 
-    wordDict = {} #For word features
+    wordDict = {} #For word features or any per-word features
     sentenceDict = {} #For per-sentence features
     miscellaneousDict = {} #Any other non-rate based features we want
     numWords = 0 
@@ -111,11 +112,8 @@ def extractWordFeatures(file):
         avgSentenceLength = numWords / numSentences
         miscellaneousDict['sentenceLength'] = avgSentenceLength
 
-    #Normalize dicts...does anyone know a better way?
-    for key in wordDict.keys(): 
-        wordDict[key] = float(wordDict[key]) / numWords
-    for key in sentenceDict.keys(): # could make this per word for simplicity as well
-        sentenceDict[key] = float(sentenceDict[key]) / numSentences
+    wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys()}
+    sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
     #Merging dicts
     featureVector = wordDict
