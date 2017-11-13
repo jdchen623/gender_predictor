@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from featureExtractor import *
 
-file = 'data/mary-shelley.txt'
+file = 'data/emily-bronte.txt'
 featureVector = extractWordFeatures(file)
 print("Book: %s" % file)
 print("Exclamation points per sentence: %s" % featureVector['!'])
