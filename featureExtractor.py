@@ -124,6 +124,6 @@ def extractWordFeatures(file):
     featureVector = wordDict
     featureVector.update(sentenceDict)
     featureVector.update(miscellaneousDict)
-    featureVector['bias'] = 1
+    featureVector['_bias_'] = 1
 
     return featureVector
