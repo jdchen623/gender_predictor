@@ -76,7 +76,7 @@ def extractCharacterFeatures(n):
 def extractWordFeatures(file):
 
     """
-    You can run stuff with ./test.py or ./classify.py
+    You can run stuff with test.py or classify.py
 
     TODO: Dealing with - and --, more features, consider using the form (count / number of words) for all rate features,
     maybe use defaultdict?
@@ -86,7 +86,7 @@ def extractWordFeatures(file):
         -? per sentence
         -, per sentence
         -' per sentence
-        -number of sentences (proxy is number of periods)
+        -average length of sentences (proxy for # sentences is number of periods)
     Feature to add:
         -Average word length
         -Percent dialogue
@@ -113,16 +113,17 @@ def extractWordFeatures(file):
                 sentenceDict["'"] = sentenceDict["'"] + 1 if "'" in sentenceDict else 1
 
         numSentences = len(content.split('.'))
-        avgSentenceLength = numWords / numSentences
+        avgSentenceLength = float(numWords) / numSentences
         miscellaneousDict['sentenceLength'] = avgSentenceLength
 
     #Normalizing vectors
     wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys()}
     sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
-    #Merging dicts
+    #Merging dicts and adding bias 
     featureVector = wordDict
     featureVector.update(sentenceDict)
     featureVector.update(miscellaneousDict)
+    featureVector['bias'] = 1
 
     return featureVector
