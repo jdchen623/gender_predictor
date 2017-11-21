@@ -103,21 +103,25 @@ def extractWordFeatures(file):
     	content = f.read()
         words = [word.lower() for word in content.split()]
         numWords = len(words)
+        avgWordLength = 0
     	for word in words:
-            strippedWord = word.strip('.,!?()')
+            strippedWord = word.strip('.,_!?()";:|*')
             wordDict[strippedWord] = wordDict[strippedWord] + 1 if strippedWord in wordDict else 1
             punctuation = word[-1]
             if (punctuation == '!' or punctuation == '?' or punctuation == ','):
                 sentenceDict[punctuation] = sentenceDict[punctuation] + 1 if punctuation in sentenceDict else 1 #default dict?
             if ("'" in word):
                 sentenceDict["'"] = sentenceDict["'"] + 1 if "'" in sentenceDict else 1
-
+            avgWordLength += len(strippedWord)
+        avgWordLength /= len(words)
         numSentences = len(content.split('.'))
         avgSentenceLength = float(numWords) / numSentences
         miscellaneousDict['sentenceLength'] = avgSentenceLength
+        miscellaneousDict['wordLength'] = avgWordLength
+
 
     #Normalizing vectors
-    wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys()}
+    wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys() if wordDict[key] > 2 and wordDict[key] < 50}
     sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
     #Merging dicts and adding bias 
