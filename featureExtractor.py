@@ -10,7 +10,7 @@ from util import *
 ############################################################
 # stochastic gradient descent
 
-def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta):
+def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta, isVerbose):
     '''
     Given |trainExamples| and |testExamples| (each one is a list of (x,y)
     pairs), a |featureExtractor| to apply to x, and the number of iterations to
@@ -45,6 +45,9 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
                 gradient = {}
 
             increment(weights, -eta, gradient)
+
+        if isVerbose:
+            print("Iteration number %d out of %d." % (step, numIters))
 
     # END_YOUR_CODE
     return weights
@@ -97,7 +100,7 @@ def extractWordFeatures(file):
     wordDict = {} #For word features or any per-word features
     sentenceDict = {} #For per-sentence features
     miscellaneousDict = {} #Any other non-rate based features we want
-    numWords = 0 
+    numWords = 0
     numSentences = 0
     with open(file,'r') as f:
     	content = f.read()
@@ -124,7 +127,7 @@ def extractWordFeatures(file):
     wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys() if wordDict[key] > 2 and wordDict[key] < 50}
     sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
-    #Merging dicts and adding bias 
+    #Merging dicts and adding bias
     featureVector = wordDict
     featureVector.update(sentenceDict)
     featureVector.update(miscellaneousDict)
