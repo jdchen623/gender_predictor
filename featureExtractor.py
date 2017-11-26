@@ -10,7 +10,7 @@ from util import *
 ############################################################
 # stochastic gradient descent
 
-def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta):
+def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta, isVerbose):
     '''
     Given |trainExamples| and |testExamples| (each one is a list of (x,y)
     pairs), a |featureExtractor| to apply to x, and the number of iterations to
@@ -45,6 +45,9 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
                 gradient = {}
 
             increment(weights, -eta, gradient)
+
+        if isVerbose:
+            print("Iteration number %d out of %d." % (step, numIters))
 
     # END_YOUR_CODE
     return weights
