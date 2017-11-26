@@ -97,7 +97,7 @@ def extractWordFeatures(file):
     wordDict = {} #For word features or any per-word features
     sentenceDict = {} #For per-sentence features
     miscellaneousDict = {} #Any other non-rate based features we want
-    numWords = 0 
+    numWords = 0
     numSentences = 0
     with open(file,'r') as f:
     	content = f.read()
@@ -120,11 +120,11 @@ def extractWordFeatures(file):
         miscellaneousDict['wordLength'] = avgWordLength
 
 
-    #Normalizing vectors
+    #turn values in vectors to rates
     wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys() if wordDict[key] > 2 and wordDict[key] < 50}
     sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
-    #Merging dicts and adding bias 
+    #Merging dicts and adding bias
     featureVector = wordDict
     featureVector.update(sentenceDict)
     featureVector.update(miscellaneousDict)

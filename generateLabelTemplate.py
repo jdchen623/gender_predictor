@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-import os 
+/..............................................................................................................................................................................................................................#!/usr/bin/env python
+import os
 
 """
 Put new text files in gender-predictor folder, run this script, then template will be in labelsTemp.py. Label
