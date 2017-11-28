@@ -4,6 +4,7 @@ import random
 import collections
 import math
 import sys
+import numpy as np
 from util import *
 
 
@@ -76,6 +77,13 @@ def extractCharacterFeatures(n):
         # END_YOUR_CODE
     return extract
 
+def normalize(wordDict):
+    mean = np.mean(wordDict.values())
+    std = np.std(wordDict.values())
+    wordDict = {key: float(wordDict[key]) - mean / std for key in wordDict.keys()}
+
+
+
 def extractWordFeatures(file):
 
     """
@@ -127,6 +135,8 @@ def extractWordFeatures(file):
     wordDict = {key: float(wordDict[key]) / numWords for key in wordDict.keys() if wordDict[key] > 2 and wordDict[key] < 50}
     sentenceDict = {key: float(sentenceDict[key]) / numSentences for key in sentenceDict.keys()}
 
+    #standardizes word dictionary
+    normalize(wordDict)
     #Merging dicts and adding bias
     featureVector = wordDict
     featureVector.update(sentenceDict)
